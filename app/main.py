@@ -16,11 +16,11 @@ def get_chat_extractor() -> ChatExtractor:
 def get_chat_analyzer() -> ChatAnalyzer:
     return LLMChatAnalyzer()
 
-@app.post("/v1/ai/chat/extract")
-async def extract_chat(
+@app.post("/v1/ai/chat/recommend")
+async def recommend_chat(
     file: UploadFile = File(...),
-    chat_extractor: ChatExtractor = Depends(get_chat_extractor()),
-
+    chat_extractor: ChatExtractor = Depends(get_chat_extractor),
+    chat_analyzer: ChatAnalyzer = Depends(get_chat_analyzer)
 ):
     try:
         image = await file.read()
