@@ -2,7 +2,7 @@ import os
 from langchain.chains.llm import LLMChain
 from langchain_core.output_parsers import JsonOutputParser
 
-from app.adapter.output.dto.message_paremeter import MessageParameter
+from app.adapter.output.dto.message_parameter import MessageParameter
 from app.domain.enums.chain_type import ChainType
 from app.adapter.output.factories.llm_factory import LLMFactory
 from app.adapter.output.factories.message_factory import MessageFactory
@@ -19,4 +19,5 @@ class ChainFactory:
             return LLMChain(llm=llm, prompt=prompt, output_parser=JsonOutputParser())
 
         elif type == ChainType.RECOMMEND:
-            return LLMChain()
+            prompt = PromptFactory.get_prompt(human_message=MessageFactory.get_message(param=human_msg_param))
+            return LLMChain(llm=llm, prompt=prompt, output_parser=JsonOutputParser())
