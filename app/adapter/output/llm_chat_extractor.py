@@ -8,15 +8,20 @@ from app.adapter.output.factories.chain_factory import ChainFactory
 from app.domain.enums.chain_type import ChainType
 from app.port.output.chat_extractor import ChatExtractor
 
+
 class LLMChatExtractor(ChatExtractor):
     def extract_from(self, image: bytes):
         # 체인 생성
-        param = ImageMessageParameter(question=os.getenv("LLM_CHAT_EXTRACT_QUESTION"), image=image)
+        param = ImageMessageParameter(
+            question=os.getenv("LLM_CHAT_EXTRACT_QUESTION"), image=image
+        )
         chain = ChainFactory.get_chain(type=ChainType.EXTRACT, human_msg_param=param)
 
         # 콜백을 사용하여 토큰 사용량 추적
         with get_openai_callback() as cb:
-            response = chain.run(format_instructions=JsonOutputParser().get_format_instructions())
+            response = chain.run(
+                format_instructions=JsonOutputParser().get_format_instructions()
+            )
 
             # 토큰 사용량 출력
             print(f"Total Tokens: {cb.total_tokens}")

@@ -15,9 +15,13 @@ class ChainFactory:
         llm = LLMFactory.get_llm(os.getenv("LLM_PROVIDER"))
 
         if type == ChainType.EXTRACT:
-            prompt = PromptFactory.get_prompt(human_message=MessageFactory.get_message(param=human_msg_param))
+            prompt = PromptFactory.get_prompt(
+                human_message=MessageFactory.get_message(param=human_msg_param)
+            )
             return LLMChain(llm=llm, prompt=prompt, output_parser=JsonOutputParser())
 
         elif type == ChainType.RECOMMEND:
-            prompt = PromptFactory.get_prompt(human_message=MessageFactory.get_message(param=human_msg_param))
+            prompt = PromptFactory.get_prompt(
+                human_message=MessageFactory.get_message(param=human_msg_param)
+            )
             return LLMChain(llm=llm, prompt=prompt, output_parser=JsonOutputParser())

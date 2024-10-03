@@ -10,15 +10,22 @@ from app.domain.chat_context import ChatContext
 from app.domain.enums.chain_type import ChainType
 from app.port.output.chat_analyzer import ChatAnalyzer
 
+
 class LLMChatAnalyzer(ChatAnalyzer):
     def recommend_reply_based_on(self, request: ChatRecommendRequest):
+
         # 체인 생성
-        param = RecommendMessageParameter(question=os.getenv("LLM_CHAT_RECOMMEND_QUESTION"), context=ChatContext(**request.model_dump()))
+        param = RecommendMessageParameter(
+            question=os.getenv("LLM_CHAT_RECOMMEND_QUESTION"),
+            context=ChatContext(**request.model_dump()),
+        )
         chain = ChainFactory.get_chain(type=ChainType.RECOMMEND, human_msg_param=param)
 
         # 콜백을 사용하여 토큰 사용량 추적
         with get_openai_callback() as cb:
-            response = chain.run(format_instructions=JsonOutputParser().get_format_instructions())
+            response = chain.run(
+                format_instructions=JsonOutputParser().get_format_instructions()
+            )
 
             # 토큰 사용량 출력
             print(f"=============== 채팅 추천 AI =====================")

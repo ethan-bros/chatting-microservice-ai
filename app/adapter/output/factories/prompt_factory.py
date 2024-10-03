@@ -3,6 +3,7 @@ import os
 from langchain_core.messages import HumanMessage, SystemMessage
 from langchain_core.prompts import ChatPromptTemplate
 
+
 class PromptFactory:
     @staticmethod
     def get_prompt(human_message: HumanMessage) -> ChatPromptTemplate:

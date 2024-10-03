@@ -10,31 +10,34 @@ class MessageFactory:
     @staticmethod
     def get_message(param: MessageParameter) -> HumanMessage:
         if isinstance(param, ImageMessageParameter):
-            base64_image = base64.b64encode(param.image).decode('utf-8')
-            return HumanMessage(content=[
+            base64_image = base64.b64encode(param.image).decode("utf-8")
+            return HumanMessage(
+                content=[
                     {
-                        "type" : "text",
-                        "text" : f"{param.question}",
+                        "type": "text",
+                        "text": f"{param.question}",
                     },
                     {
-                        "type" : "image_url",
-                        "image_url" : {
-                            "url" : f"data:image/jpeg;base64,{base64_image}",
-                            "default" : "auto",
-                        }
-                    }
-
-                ])
+                        "type": "image_url",
+                        "image_url": {
+                            "url": f"data:image/jpeg;base64,{base64_image}",
+                            "default": "auto",
+                        },
+                    },
+                ]
+            )
         elif isinstance(param, RecommendMessageParameter):
-            return HumanMessage(content=[
-                {
-                    "type": "text",
-                    "text": f"{param.question}",
-                },
-                {
-                    "type": "text",
-                    "text": f"{param.context.to_json_string()}",
-                }
-            ])
+            return HumanMessage(
+                content=[
+                    {
+                        "type": "text",
+                        "text": f"{param.question}",
+                    },
+                    {
+                        "type": "text",
+                        "text": f"{param.context.to_json_string()}",
+                    },
+                ]
+            )
         else:
             return MessageParameter()
