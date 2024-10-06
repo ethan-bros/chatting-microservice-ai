@@ -3,6 +3,8 @@ import os
 from dotenv import load_dotenv
 from fastapi import FastAPI, UploadFile, File, HTTPException, Depends
 
+from app.adapter.output.ocr_chat_extractor import OCRChatExtractor
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
@@ -19,7 +21,8 @@ app = FastAPI()
 
 
 def get_chat_extractor() -> ChatExtractor:
-    return LLMChatExtractor()
+    # return LLMChatExtractor()
+    return OCRChatExtractor()
 
 
 def get_chat_analyzer() -> ChatAnalyzer:
