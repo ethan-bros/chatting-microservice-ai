@@ -3,7 +3,10 @@ import numpy as np
 import easyocr
 import re
 from difflib import get_close_matches
+from pydantic import BaseModel, Field, TypeAdapter
+from typing import List
 
+from app.adapter.output.messaging.models.line_component import LineComponent
 from app.port.output.chat_extractor import ChatExtractor
 
 
@@ -102,7 +105,7 @@ class OCRChatExtractor(ChatExtractor):
         else:
             return "나" if x + w > img_width / 2 else "상대방"
 
-    def extract_from(self, image: bytes):
+    def extract_from(self, image: bytes) -> List[LineComponent]:
         nparr = np.frombuffer(image, np.uint8)
         img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
 
@@ -114,7 +117,7 @@ class OCRChatExtractor(ChatExtractor):
             text = self.extract_text(img, bubble)
             if text and self.is_valid_text(text):
                 speaker = self.determine_speaker(x, w, img.shape[1])
-                chat_log.append({"order": i + 1, "speaker": speaker, "content": text})
+                chat_log.append({"order": i + 1, "speaker": speaker, "line": text})
 
         # y 좌표로 정렬하되, 같은 y 좌표일 경우 x 좌표로 정렬
         chat_log.sort(
@@ -125,4 +128,5 @@ class OCRChatExtractor(ChatExtractor):
         for i, chat in enumerate(chat_log):
             chat["order"] = i + 1
 
-        return chat_log
+        line_comp_list_adapter = TypeAdapter(List[LineComponent])
+        return line_comp_list_adapter.validate_python(chat_log)
