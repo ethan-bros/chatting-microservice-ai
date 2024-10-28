@@ -9,7 +9,7 @@ httpx
 python-dotenv
 confluent-kafka
 easyocr
-langchain
+langchain-openai
 pillow
 python-multipart==0.0.6
 urllib3==1.26.6

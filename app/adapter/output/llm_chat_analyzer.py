@@ -1,7 +1,7 @@
-import os
 import json
+import os
+
 from langchain.callbacks import get_openai_callback
-from langchain_core.output_parsers import JsonOutputParser
 
 from app.adapter.output.dto.recommend_message_parameter import RecommendMessageParameter
 from app.adapter.output.dto.request.chat_recommend_request import ChatRecommendRequest
@@ -23,9 +23,7 @@ class LLMChatAnalyzer(ChatAnalyzer):
 
         # 콜백을 사용하여 토큰 사용량 추적
         with get_openai_callback() as cb:
-            response = chain.run(
-                format_instructions=JsonOutputParser().get_format_instructions()
-            )
+            response = chain.invoke({})
 
             # 토큰 사용량 출력
             print(f"=============== 채팅 추천 AI =====================")

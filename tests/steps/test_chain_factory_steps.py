@@ -1,8 +1,9 @@
-from langchain.chains.llm import LLMChain
-from langchain_community.chat_models import ChatOpenAI
-from langchain_core.prompts import ChatPromptTemplate
-from pytest_bdd import scenario, given, when, then
 from unittest.mock import patch, Mock
+
+from langchain.chains.llm import LLMChain
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_openai import ChatOpenAI
+from pytest_bdd import scenario, given, when, then
 
 from app.adapter.output.dto.image_message_parameter import ImageMessageParameter
 from app.adapter.output.factories.chain_factory import ChainFactory
